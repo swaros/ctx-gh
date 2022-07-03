@@ -1,0 +1,24 @@
+task:
+  - id: verify
+    require:
+      variables: 
+         gh-version: "*"
+    script:
+      - echo "version ${version}"
+
+  - id: verify
+    require:
+      variables: 
+         gh-version: ""
+    script:
+      - echo "error! no version exists. you need to provide the variable gh-version"
+
+  # new release. needs gh installed
+  - id: gh-release
+    needs:
+      - verify
+    require:
+      variables:
+        gh-version: "*"
+    script:
+      -  gh release create ${gh-version} --generate-notes
